@@ -10,21 +10,37 @@ class Tester < Test::Unit::TestCase
   end
 
   def test_create
-    post '/books', '{"title": "trials of being jimz", "isbn": "0234234"}', { "CONTENT_TYPE" => 'application/json' }
+    post '/books',
+      '{"title": "trials of being jimz", "isbn": "0234234"}',
+      { "CONTENT_TYPE" => 'application/json' }
 
     assert_equal last_response.status, 201, "status is 201 created"
     assert_equal last_response.header["Content-Type"], "application/json;charset=utf-8", "application/json content type"
 
     body = JSON.parse last_response.body
-    assert_equal body["id"], 1
+    id = body["id"].to_s
+
     assert_equal body["title"], "trials of being jimz"
 
-    delete '/books/1'
+    delete '/books/' + id
     assert_equal last_response.status, 204, "status is 204 no content"
   end
 
+  def test_bad_create
+    post '/books',
+      '{"isbn": "0234234"}',
+      { "CONTENT_TYPE" => 'application/json' }
+
+    assert_equal last_response.status, 400, "missing required field"
+
+    body = JSON.parse last_response.body
+    assert_equal body["errors"]["title"][0], "Title must not be blank", "error message is descriptive"
+  end
+
   def test_read
-    post '/books', '{"title": "trials of being jimz", "isbn": "0234234"}', { "CONTENT_TYPE" => 'application/json' }
+    post '/books',
+      '{"title": "trials of being jimz", "isbn": "0234234"}',
+      { "CONTENT_TYPE" => 'application/json' }
 
     assert_equal last_response.status, 201, "status is 201 created"
     body = JSON.parse last_response.body
@@ -36,6 +52,13 @@ class Tester < Test::Unit::TestCase
 
     delete '/books/' + id
     assert_equal last_response.status, 204, "status is 204 no content"
+  end
+
+  def test_bad_read
+    get '/books/1000000'
+    assert_equal last_response.status, 404
+    body = JSON.parse last_response.body
+    assert_equal body["error"], "not found", "error message is descriptive"
   end
 
   def test_list
@@ -82,20 +105,10 @@ class Tester < Test::Unit::TestCase
 
     assert_equal last_response.status, 200, "status is 200 ok"
 
-    puts "__ID__"
-    puts id
-
     get '/books/' + id
 
     assert_equal last_response.status, 200, "status is 200 ok"
     body = JSON.parse last_response.body
-
-    puts "BODY"
-    puts last_response.body
-
-    puts "____ISBN____"
-    puts body["isbn"]
-    puts "44302"
 
     assert_equal body["isbn"].to_s, "44302", "isbn is updated"
     

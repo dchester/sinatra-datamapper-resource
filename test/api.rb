@@ -27,8 +27,8 @@ class TestAPI < Sinatra::Base
   end
 
   get '/books/:id' do
-    @books = resource_action Book => :list
-    @books.to_json
+    @book = resource_action Book => :read
+    @book.to_json
   end
 
   patch '/books/:id' do

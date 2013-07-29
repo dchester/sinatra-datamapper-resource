@@ -37,8 +37,7 @@ module Sinatra
             return status 500
           end
         else
-          status 400
-          return { errors: @item.errors.to_hash }
+          halt 400, { errors: @item.errors.to_hash }.to_json
         end
       end
 
@@ -46,8 +45,7 @@ module Sinatra
         if @item = model.get(params[:id])
           @item
         else
-          status 404
-          return { error: "not found" }
+          halt 404, { error: "not found" }.to_json
         end
 
         body = JSON.parse request.body.read
@@ -55,13 +53,13 @@ module Sinatra
 
         if @item.valid?
           if @item.save
-            return status 200
+            status 200
+            return @item
           else
             return status 500
           end
         else
-          status 400
-          return { errors: @item.errors.to_hash }
+          halt 400, { errors: @item.errors.to_hash }.to_json
         end
       end
 
@@ -73,8 +71,7 @@ module Sinatra
             return status 500
           end
         else
-          status 404
-          return { error: "not found" }
+          halt 404, { error: "not found" }.to_json
         end
       end
 
