@@ -2,7 +2,8 @@ require 'sinatra/base'
 require 'json'
 
 module Sinatra
-  module ResourceAction
+  module DataMapper
+    module Resource
 
       def resource_action(model_action)
         content_type "application/json"
@@ -31,7 +32,7 @@ module Sinatra
           if @item.save
             status 201
             href = request.path + "/" + @item.id.to_s # an assumption
-            headers "Location" => request.path
+            headers "Location" => href
             return @item
           else
             return status 500
@@ -74,7 +75,7 @@ module Sinatra
           halt 404, { error: "not found" }.to_json
         end
       end
-
+    end
   end
-  helpers ResourceAction
+  helpers DataMapper::Resource
 end
