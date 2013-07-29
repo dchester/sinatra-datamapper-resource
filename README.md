@@ -1,4 +1,4 @@
-# Sinatra DataMapper + REST
+# Sinatra DataMapper Resource Helpers
 
 Build RESTful resources around DataMapper models.
 
