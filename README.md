@@ -11,6 +11,8 @@ require 'sinatra'
 require 'data_mapper'
 require 'sinatra/datamapper_resource'
 
+# define a datamapper model and initialize the schema
+
 class Book
     include DataMapper::Resource
 
@@ -21,6 +23,8 @@ end
 
 DataMapper.setup :default, 'sqlite::memory:'
 DataMapper.auto_migrate!
+
+# add routes and controllers
 
 get '/books' do
   @book = resource_action Book => :list
@@ -46,5 +50,8 @@ delete '/books/:id' do
  resource_action Book => :destroy
 end
 ```
+
+
+
 
 
