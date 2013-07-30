@@ -4,7 +4,7 @@ Build RESTful resources around DataMapper models.
 
 ## Getting Started
 
-Build a datamapper model and then associate routes with actions via the `resource_action` helper
+Build a datamapper model, and then add its surrounding API with `resource`:
 
 ```ruby
 require 'sinatra'
@@ -24,8 +24,13 @@ end
 DataMapper.setup :default, 'sqlite::memory:'
 DataMapper.auto_migrate!
 
-# add routes and controllers
+# add surrounding routes and controllers
+resource Book, '/books'
+```
 
+As an alternative, if you want to have more control or be more explicit, you can piece things together yourself with `resource_action`:
+
+```ruby
 get '/books' do
   @book = resource_action Book => :list
   @book.to_json
@@ -51,9 +56,5 @@ delete '/books/:id' do
 end
 ```
 
-Or if that's too much typing for you, get all the routes in one shot:
+This is equivalent to calling `resource` as above.
 
-```ruby
-# equivalent to manually defined routes above
-resource Book, '/books'
-```
