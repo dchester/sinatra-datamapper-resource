@@ -1,6 +1,6 @@
 require 'sinatra/base'
 require 'data_mapper'
-require_relative '../lib/sinatra/datamapper_resource'
+require_relative '../../lib/sinatra/datamapper_resource'
 
 class Book
     include DataMapper::Resource
@@ -14,7 +14,7 @@ DataMapper.setup :default, 'sqlite::memory:'
 DataMapper.auto_migrate!
 
 class TestAPI < Sinatra::Base
-  helpers Sinatra::DataMapper::Resource
+  helpers Sinatra::DataMapper::Resource::Action
 
   post '/books' do
     @book = resource_action Book => :create

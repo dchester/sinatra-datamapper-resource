@@ -1,14 +1,4 @@
-require_relative 'app'
-require 'test/unit'
-require 'rack/test'
-
-class Tester < Test::Unit::TestCase
-  include Rack::Test::Methods
-
-  def app
-    TestAPI
-  end
-
+module CRUD
   def test_create
     post '/books',
       '{"title": "trials of being jimz", "isbn": "0234234"}',
@@ -113,4 +103,5 @@ class Tester < Test::Unit::TestCase
     assert_equal body["isbn"].to_s, "44302", "isbn is updated"
     
   end
+
 end
