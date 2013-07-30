@@ -28,6 +28,19 @@ DataMapper.auto_migrate!
 resource Book, '/books'
 ```
 
+With that, we have a read/write REST API with these routes available:
+
+|path|description|
+|----|-----------|
+|POST /books| Add a new book|
+|GET /books| Get a listing of books|
+|GET /books/:id | Get details about a book|
+|PATCH /books/:id | Update a book|
+|DELETE /books/:id | Delete a book|
+
+
+#### More Control
+
 As an alternative, if you want to have more control or be more explicit, you can piece things together yourself with `resource_action`:
 
 ```ruby
