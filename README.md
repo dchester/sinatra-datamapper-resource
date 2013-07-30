@@ -56,5 +56,4 @@ Or if that's too much typing for you, get all the routes in one shot:
 ```ruby
 # equivalent to manually defined routes above
 resource Book, '/books'
-
 ```
