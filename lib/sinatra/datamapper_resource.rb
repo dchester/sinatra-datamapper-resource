@@ -32,7 +32,6 @@ module Sinatra
 
         delete base_path + '/:id' do
           @item = resource_action model => :destroy
-          @item.to_json
         end
 
       end
